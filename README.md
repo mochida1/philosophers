@@ -1,0 +1,2 @@
+# philosophers
+multithreading excercise
