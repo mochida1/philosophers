@@ -1,0 +1,16 @@
+*.o
+*.a
+philo
+tester
+.vscode
+vgcore*
+*.dSYM
+test_prog
+vf-notes.md
+nfs*
+.nfs*
+
+0_env
+infile
+outfile
+delete.me
