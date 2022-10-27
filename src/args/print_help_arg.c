@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 19:58:55 by hmochida          #+#    #+#             */
-/*   Updated: 2022/10/23 22:07:54 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/10/26 21:54:55 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ static int	print_help_1(char *argv[])
 	return (0);
 }
 
+// wrapper to print all the helps
 void	print_help_arg(char *argv[])
 {
 	int	rc;

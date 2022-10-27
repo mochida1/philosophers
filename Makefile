@@ -10,7 +10,7 @@ VPATH = src src/main src/args src/TESTS
 INCLUDES = -I /headers
 
 # Lists sources. Manually because of norm...
-MAIN = philo.c
+MAIN = philo.c initialization.c
 ARGS = check_args.c print_help_arg.c print_help_utils.c
 TESTS = PRINT_DATA.c
 

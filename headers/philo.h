@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:38 by hmochida          #+#    #+#             */
-/*   Updated: 2022/10/23 21:52:39 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/10/26 21:15:19 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ pthread_mutex_unlock
 # include "../libft/libft.h"
 
 # include "../src/TESTS/tests.h" // DELETAR ESSE CARA
+
+t_init	*init_data(char *argv[]);
 
 /* ARGS */
 int		check_args(int argc, char *argv[]);

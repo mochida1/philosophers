@@ -6,37 +6,28 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:33:23 by hmochida          #+#    #+#             */
-/*   Updated: 2022/10/23 21:34:58 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/10/26 21:57:02 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/philo.h"
 
-void	convert_args(t_phil *this, char *argv[])
+int	init_ph(t_phil *ph, t_init *data)
 {
-	this->nop = ft_atoui(argv[1]);
-	this->ttd = ft_atoui(argv[2]);
-	this->tte = ft_atoui(argv[3]);
-	this->tts = ft_atoui(argv[4]);
-	if (argv[5])
-		this->endwhen = ft_atoui(argv[5]);
-print_data(this);
-}
-
-t_phil *init_data(char *argv[])
-{
-	t_phil	*this;
-
-	this = ft_calloc(1, (sizeof(this)));
-	convert_args(this, argv);
-	return (this);
+	
 }
 
 int	main(int argc, char *argv[])
 {
-	t_phil	*data;
+	t_init	*data;
+	t_phil	*ph;
 
 	if (check_args(argc, argv))
 		return (1);
 	data = init_data(argv);
+	if (!data)
+		return (1);
+	ph = ft_calloc(data->nop, sizeof(t_phil));
+	if (init_ph(ph, data))
+		return (1);
 }

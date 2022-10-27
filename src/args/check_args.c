@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 20:07:08 by hmochida          #+#    #+#             */
-/*   Updated: 2022/10/23 22:15:42 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/10/26 21:33:26 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	is_too_big(char *argv)
 		big += argv[count] - 48;
 		count++;
 	}
-	if (big > __UINT32_MAX__)
+	if (big > __INT32_MAX__)
 	{
 		printf("\e[31mInvalid argument: %s is too big\e[0m\n", argv);
 		return (1);
@@ -98,6 +98,8 @@ static int	check_arg_values(char *argv[])
 		j = 0;
 		i++;
 	}
+	if (i < 5)
+		return(printf("Too few arguments\n"));
 	return (0);
 }
 
