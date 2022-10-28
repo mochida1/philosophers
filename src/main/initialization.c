@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 20:45:37 by hmochida          #+#    #+#             */
-/*   Updated: 2022/10/26 21:52:05 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/10/27 21:07:09 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ static int	check_this_for_zeros(t_init *this, char	*argv[])
 
 static void	convert_args(t_init *this, char *argv[])
 {
-	this->nop = ft_atoui(argv[1]);
-	this->ttd = ft_atoui(argv[2]);
-	this->tte = ft_atoui(argv[3]);
-	this->tts = ft_atoui(argv[4]);
+	this->nop = ft_atoi(argv[1]);
+	this->ttd = ft_atoi(argv[2]);
+	this->tte = ft_atoi(argv[3]);
+	this->tts = ft_atoi(argv[4]);
 	if (argv[5])
 	{
 		this->should_end = 1;
-		this->endwhen = ft_atoui(argv[5]);
+		this->endwhen = ft_atoi(argv[5]);
 	}
 PRINT_DATA(this);
 }

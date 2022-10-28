@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:00 by hmochida          #+#    #+#             */
-/*   Updated: 2022/10/26 21:32:49 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/10/27 21:30:42 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,22 +37,22 @@ WHITE_FG		\e[97m
 typedef struct s_init
 {
 	unsigned int nop;
-	unsigned int ttd;
-	unsigned int tte;
-	unsigned int tts;
-	unsigned int should_end;
-	unsigned int endwhen;
+	int ttd;
+	int tte;
+	int tts;
+	int should_end;
+	int endwhen;
 } t_init;
 
 typedef struct s_phil
 {
 	unsigned int philo;
-	pthread_mutex_t **mutex;
+	t_init *data;
+	pthread_mutex_t *mutex;
 	int *timer_eat;
 	int *timer_sleep;
 	int *timer_die;
 	int *num_eat;
-	struct t_init *data;
 } t_phil;
 
 #endif // DEFS_H
