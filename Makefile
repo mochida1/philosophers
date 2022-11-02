@@ -31,7 +31,7 @@ FSF = -fsanitize=address
 
 $(NAME): $(LIBFT) $(BUILDDIR) $(OBJS)
 	@printf "Compiling philosophers...\n"
-	@$(CC) $(CF) $(OBJS) $(INCLUDES) $(LIBFT) -o $(NAME)
+	@$(CC) $(CF) $(OBJS) $(INCLUDES) $(LIBFT) -lpthread -o $(NAME)
 	@printf "Done!\n"
 
 $(NAME_FS): $(LIBFT) $(OBJS)

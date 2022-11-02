@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 20:59:15 by hmochida          #+#    #+#             */
-/*   Updated: 2022/10/26 21:15:19 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/10/29 18:31:40 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,5 @@ void	PRINT_DATA(t_init *data)
 	printf("time to sleep:\t\t%u\n", data->tts);
 	printf("should_end:\t\t%u\n", data->should_end);
 	printf("end when:\t\t%u\n", data->endwhen);
+	printf("start time:%lld\n", data->start_time);
 }

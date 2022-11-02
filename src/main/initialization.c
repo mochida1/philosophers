@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 20:45:37 by hmochida          #+#    #+#             */
-/*   Updated: 2022/10/27 21:07:09 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/01 21:14:24 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static int	check_this_for_zeros(t_init *this, char	*argv[])
 
 static void	convert_args(t_init *this, char *argv[])
 {
+	struct timeval	time;
+	
 	this->nop = ft_atoi(argv[1]);
 	this->ttd = ft_atoi(argv[2]);
 	this->tte = ft_atoi(argv[3]);
@@ -34,14 +36,16 @@ static void	convert_args(t_init *this, char *argv[])
 		this->should_end = 1;
 		this->endwhen = ft_atoi(argv[5]);
 	}
-PRINT_DATA(this);
+	gettimeofday(&time, NULL);
+	this->start_time = (time.tv_usec / MS) + (time.tv_sec * MS); 
+// PRINT_DATA(this);
 }
 
 t_init *init_data(char *argv[])
 {
 	t_init	*this;
 
-	this = ft_calloc(1, (sizeof(this)));
+	this = ft_calloc(1, (sizeof(*this)));
 	convert_args(this, argv);
 	if (check_this_for_zeros(this, argv))
 			this = safe_free(this);

@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:00 by hmochida          #+#    #+#             */
-/*   Updated: 2022/10/27 21:30:42 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/10/29 18:45:56 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ LI_MAGEN_FG		\e[95m
 LI_CYAN_FG		\e[96m
 WHITE_FG		\e[97m
 */
+#define MS 1000
 
 typedef struct s_init
 {
@@ -42,6 +43,7 @@ typedef struct s_init
 	int tts;
 	int should_end;
 	int endwhen;
+	long long start_time;
 } t_init;
 
 typedef struct s_phil
