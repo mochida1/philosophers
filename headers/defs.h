@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:00 by hmochida          #+#    #+#             */
-/*   Updated: 2022/10/29 18:45:56 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/02 20:00:26 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,12 @@ typedef struct s_phil
 	unsigned int philo;
 	t_init *data;
 	pthread_mutex_t *mutex;
+	char *forks;
 	int *timer_eat;
 	int *timer_sleep;
 	int *timer_die;
 	int *num_eat;
+	int *stop;
 } t_phil;
 
 #endif // DEFS_H
