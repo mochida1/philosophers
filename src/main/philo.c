@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:33:23 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/02 21:42:39 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/03 21:53:09 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,10 +141,15 @@ int	check_forks(t_phil *ph)
 		other_fork = ph->philo + 1;
 	if (!ph->forks[ph->philo] && !ph->forks[other_fork])
 	{
+		pthread_mutex_lock(&ph->mutex[ph->philo]);
 		ph->forks[ph->philo] = 1;
+		printf ("%01.03f\t%u has taken a fork\n", ((float) get_current_time(ph->data)/MS), ph->philo);
+		pthread_mutex_lock(&ph->mutex[other_fork]);
 		ph->forks[other_fork] = 1;
+		printf ("%01.03f\t%u has taken a fork\n", ((float) get_current_time(ph->data)/MS), ph->philo);
 		return (0);
 	}
+	usleep(10);
 	return (1);
 }
 
@@ -160,6 +165,10 @@ int	give_forks_back(t_phil *ph)
 		other_fork = ph->philo + 1;
 	ph->forks[ph->philo] = 0;
 	ph->forks[other_fork] = 0;
+	pthread_mutex_unlock(&ph->mutex[ph->philo]);
+	printf ("%01.03f\t%u gives fork back\n", ((float) get_current_time(ph->data)/MS), ph->philo);
+	pthread_mutex_unlock(&ph->mutex[other_fork]);
+	printf ("%01.03f\t%u gives fork back\n", ((float) get_current_time(ph->data)/MS), ph->philo);
 	return (0);
 }
 
@@ -167,15 +176,8 @@ void	*do_stuff(void *arg)
 {
 	t_phil *ph = arg;
 
-	int	i;
-	i = 0;
-	while (i < 10)
-	{
-		printf("PH[%u] %d\n", ph->philo, i);
-		i++;
-	}
-	return (NULL);
-	while (!*ph->stop)
+	ph->timer_die[ph->philo] = get_current_time(ph->data) + ph->data->ttd;
+	while (1)
 	{
 		ph->timer_sleep[ph->philo] = get_current_time(ph->data) + ph->data->tts;
 		printf ("%01.03f\t%u is sleeping\n", ((float) get_current_time(ph->data)/MS), ph->philo);
@@ -190,6 +192,7 @@ void	*do_stuff(void *arg)
 		printf ("%01.03f\t%u is eating;\n", ((float) get_current_time(ph->data)/MS), ph->philo);
 		while (get_current_time(ph->data) < ph->timer_eat[ph->philo])
 			continue ;
+
 		give_forks_back(ph);
 
 		ph->timer_die[ph->philo] = get_current_time(ph->data) + ph->data->ttd;
