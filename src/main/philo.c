@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:33:23 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/04 21:39:26 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/04 21:46:50 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,7 @@ int	philo_manager(t_phil *ph)
 		if (ph->timer_die[i] < get_current_time(ph->data))
 		{
 			ph->data->stop = 1;
-			printf("philo %u has died \n", i + 1);
+			printf("%01.03f\tphilo %u has died \n", ((float) get_current_time(ph->data)/MS), i + 1);
 			break;
 		}
 		if (ph->data->should_end && ph->num_eat[i] < 1)
