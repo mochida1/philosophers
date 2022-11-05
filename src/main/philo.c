@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:33:23 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/05 15:52:04 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/05 15:54:57 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,8 @@ int	give_forks_back(t_phil *ph)
 	pthread_mutex_unlock(&ph->mutex[ph->own_fork]);
 	pthread_mutex_unlock(&ph->mutex[ph->other_fork]);
 	printf ("%01.03f\t%u gives fork back\n", ((float) get_current_time(ph->data)/MS), ph->philo);
-	printf ("%01.03f\t%u gives fork back\n", ((float) get_current_time(ph->data)/MS), ph->philo);
+	// printf ("%01.03f\t%u gives fork back\n", ((float) get_current_time(ph->data)/MS), ph->philo);
+	ph->timer_sleep[ph->philo] = get_current_time(ph->data) + ph->data->tts;
 	return (0);
 }
 
@@ -167,7 +168,7 @@ void	*do_stuff(void *arg)
 		printf("ttd[%u]: %lld\n", ph->philo, ph->timer_die[ph->philo]);
 		give_forks_back(ph);
 
-		ph->timer_sleep[ph->philo] = get_current_time(ph->data) + ph->data->tts;
+
 		printf ("%01.03f\t%u is sleeping;\n", ((float) get_current_time(ph->data)/MS), ph->philo);
 		while (get_current_time(ph->data) < ph->timer_sleep[ph->philo])
 			continue ;
