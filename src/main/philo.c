@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:33:23 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/04 21:46:50 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/05 15:52:04 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@ int destroy_all_mutexes(t_phil *ph, int tot_to_destroy)
 
 int	sub_init_ph3(t_phil *ph, t_init *data)
 {
-	char			*tmp_forks;
 	unsigned int	i;
 
-	tmp_forks = ft_calloc(data->nop, sizeof(char));
-	if (!tmp_forks)
-		return (1);
 	i = 0;
 	while (i < data->nop)
 	{
-		ph[i].forks = tmp_forks;
+		ph[i].own_fork = ph[i].philo;
+		if (ph[i].philo == ph[i].data->nop - 1)
+			ph[i].other_fork = 0;
+		else
+			ph[i].other_fork = ph[i].philo + 1;
 		i++;
 	}
 	return (0);
@@ -42,8 +42,8 @@ int	sub_init_ph3(t_phil *ph, t_init *data)
 int	sub_init_ph2(t_phil *ph, t_init *data)
 {
 	unsigned int	i;
-	int	*to_die;
-	int	*eats;
+	long long		*to_die;
+	int				*eats;
 
 	i = 0;
 	to_die = ft_calloc(data->nop, sizeof(int));
@@ -70,8 +70,8 @@ int	sub_init_ph1(t_phil *ph, t_init *data)
 {
 	unsigned int	i;
 	pthread_mutex_t	*mut;
-	int				*to_eat;
-	int				*to_sleep;
+	long long				*to_eat;
+	long long				*to_sleep;
 
 	i = 0;
 	mut = ft_calloc(data->nop, sizeof(*mut));
@@ -128,45 +128,19 @@ long long	get_current_time(t_init *data)
 
 int	check_forks(t_phil *ph)
 {
-	unsigned int	other_fork;
-
-	if (ph->philo == 0)
-		other_fork = ph->data->nop - 1;
-	else if (ph->philo == ph->data->nop - 1)
-		other_fork = 0;
-	else
-		other_fork = ph->philo + 1;
-	if (!ph->forks[ph->philo] && !ph->forks[other_fork])
-	{
-		ph->forks[ph->philo] = 1;
-		ph->forks[other_fork] = 1;
-		pthread_mutex_lock(&ph->mutex[ph->philo]);
-		pthread_mutex_lock(&ph->mutex[other_fork]);
-		printf ("%01.03f\t%u has taken a fork\n", ((float) get_current_time(ph->data)/MS), ph->philo);
-		printf ("%01.03f\t%u has taken a fork\n", ((float) get_current_time(ph->data)/MS), ph->philo);
-		return (0);
-	}
-	// usleep(10);
-	return (1);
+	if (!ph->philo % 2)
+		usleep(20);
+	pthread_mutex_lock(&ph->mutex[ph->own_fork]);
+	pthread_mutex_lock(&ph->mutex[ph->other_fork]);
+	printf ("%01.03f\t%u has taken a fork\n", ((float) get_current_time(ph->data)/MS), ph->philo);
+	printf ("%01.03f\t%u has taken a fork\n", ((float) get_current_time(ph->data)/MS), ph->philo);
+	return (0);
 }
 
 int	give_forks_back(t_phil *ph)
 {
-	unsigned int	other_fork;
-
-	if (ph->philo == 0)
-		other_fork = ph->data->nop - 1;
-	else if (ph->philo == ph->data->nop - 1)
-		other_fork = 0;
-	else
-		other_fork = ph->philo + 1;
-
-	if ((ph->forks[ph->philo] && !ph->forks[other_fork]) || (!ph->forks[ph->philo] && ph->forks[other_fork]))
-		return (0);
-	pthread_mutex_unlock(&ph->mutex[ph->philo]);
-	ph->forks[ph->philo] = 0;
-	pthread_mutex_unlock(&ph->mutex[other_fork]);
-	ph->forks[other_fork] = 0;
+	pthread_mutex_unlock(&ph->mutex[ph->own_fork]);
+	pthread_mutex_unlock(&ph->mutex[ph->other_fork]);
 	printf ("%01.03f\t%u gives fork back\n", ((float) get_current_time(ph->data)/MS), ph->philo);
 	printf ("%01.03f\t%u gives fork back\n", ((float) get_current_time(ph->data)/MS), ph->philo);
 	return (0);
@@ -182,23 +156,22 @@ void	*do_stuff(void *arg)
 	while (1)
 	{
 
-		printf ("%01.03f\t%u is thiking\n", ((float) get_current_time(ph->data)/MS), ph->philo);
-		while (check_forks(ph))
-			continue ;
+		printf ("%01.03f\t%u is thiking;\n", ((float) get_current_time(ph->data)/MS), ph->philo);
+		check_forks(ph);
 
 		ph->timer_eat[ph->philo] = get_current_time(ph->data) + ph->data->tte;
 		printf ("%01.03f\t%u is eating;\n", ((float) get_current_time(ph->data)/MS), ph->philo);
 		while (get_current_time(ph->data) < ph->timer_eat[ph->philo])
 			continue ;
-
+		ph->timer_die[ph->philo] = get_current_time(ph->data) + ph->data->ttd;
+		printf("ttd[%u]: %lld\n", ph->philo, ph->timer_die[ph->philo]);
 		give_forks_back(ph);
 
-		ph->timer_die[ph->philo] = get_current_time(ph->data) + ph->data->ttd;
-
 		ph->timer_sleep[ph->philo] = get_current_time(ph->data) + ph->data->tts;
-		printf ("%01.03f\t%u is sleeping\n", ((float) get_current_time(ph->data)/MS), ph->philo);
+		printf ("%01.03f\t%u is sleeping;\n", ((float) get_current_time(ph->data)/MS), ph->philo);
 		while (get_current_time(ph->data) < ph->timer_sleep[ph->philo])
 			continue ;
+
 	}
 	return (0);
 }
@@ -224,7 +197,7 @@ int	philo_manager(t_phil *ph)
 		if (ph->timer_die[i] < get_current_time(ph->data))
 		{
 			ph->data->stop = 1;
-			printf("%01.03f\tphilo %u has died \n", ((float) get_current_time(ph->data)/MS), i + 1);
+			printf("%01.03f\tphilo %u has died \n", ((float) get_current_time(ph->data)/MS), i);
 			break;
 		}
 		if (ph->data->should_end && ph->num_eat[i] < 1)
