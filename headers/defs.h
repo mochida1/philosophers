@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:00 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/02 20:00:26 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/04 21:32:14 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct s_init
 	int should_end;
 	int endwhen;
 	long long start_time;
+	int start;
+	int stop;
 } t_init;
 
 typedef struct s_phil
@@ -56,7 +58,6 @@ typedef struct s_phil
 	int *timer_sleep;
 	int *timer_die;
 	int *num_eat;
-	int *stop;
 } t_phil;
 
 #endif // DEFS_H

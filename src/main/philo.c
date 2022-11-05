@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:33:23 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/03 21:53:09 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/04 21:39:26 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,15 @@ int destroy_all_mutexes(t_phil *ph, int tot_to_destroy)
 int	sub_init_ph3(t_phil *ph, t_init *data)
 {
 	char			*tmp_forks;
-	int				*tmp_stop;
 	unsigned int	i;
 
 	tmp_forks = ft_calloc(data->nop, sizeof(char));
-	tmp_stop = ft_calloc(1, sizeof(int));
 	if (!tmp_forks)
 		return (1);
 	i = 0;
 	while (i < data->nop)
 	{
 		ph[i].forks = tmp_forks;
-		ph[i].stop = tmp_stop;
 		i++;
 	}
 	return (0);
@@ -82,7 +79,7 @@ int	sub_init_ph1(t_phil *ph, t_init *data)
 	to_sleep = ft_calloc(data->nop, sizeof(int));
 	while (i < data->nop)
 	{
-		ph[i].philo = i + 1;
+		ph[i].philo = i;
 		ph[i].data = data;
 		ph[i].mutex = mut;
 		if (pthread_mutex_init(mut + i, NULL))
@@ -134,22 +131,22 @@ int	check_forks(t_phil *ph)
 	unsigned int	other_fork;
 
 	if (ph->philo == 0)
-		other_fork = ph->data->nop;
-	else if (ph->philo == ph->data->nop)
+		other_fork = ph->data->nop - 1;
+	else if (ph->philo == ph->data->nop - 1)
 		other_fork = 0;
 	else
 		other_fork = ph->philo + 1;
 	if (!ph->forks[ph->philo] && !ph->forks[other_fork])
 	{
-		pthread_mutex_lock(&ph->mutex[ph->philo]);
 		ph->forks[ph->philo] = 1;
-		printf ("%01.03f\t%u has taken a fork\n", ((float) get_current_time(ph->data)/MS), ph->philo);
-		pthread_mutex_lock(&ph->mutex[other_fork]);
 		ph->forks[other_fork] = 1;
+		pthread_mutex_lock(&ph->mutex[ph->philo]);
+		pthread_mutex_lock(&ph->mutex[other_fork]);
+		printf ("%01.03f\t%u has taken a fork\n", ((float) get_current_time(ph->data)/MS), ph->philo);
 		printf ("%01.03f\t%u has taken a fork\n", ((float) get_current_time(ph->data)/MS), ph->philo);
 		return (0);
 	}
-	usleep(10);
+	// usleep(10);
 	return (1);
 }
 
@@ -158,16 +155,19 @@ int	give_forks_back(t_phil *ph)
 	unsigned int	other_fork;
 
 	if (ph->philo == 0)
-		other_fork = ph->data->nop;
-	else if (ph->philo == ph->data->nop)
+		other_fork = ph->data->nop - 1;
+	else if (ph->philo == ph->data->nop - 1)
 		other_fork = 0;
 	else
 		other_fork = ph->philo + 1;
-	ph->forks[ph->philo] = 0;
-	ph->forks[other_fork] = 0;
+
+	if ((ph->forks[ph->philo] && !ph->forks[other_fork]) || (!ph->forks[ph->philo] && ph->forks[other_fork]))
+		return (0);
 	pthread_mutex_unlock(&ph->mutex[ph->philo]);
-	printf ("%01.03f\t%u gives fork back\n", ((float) get_current_time(ph->data)/MS), ph->philo);
+	ph->forks[ph->philo] = 0;
 	pthread_mutex_unlock(&ph->mutex[other_fork]);
+	ph->forks[other_fork] = 0;
+	printf ("%01.03f\t%u gives fork back\n", ((float) get_current_time(ph->data)/MS), ph->philo);
 	printf ("%01.03f\t%u gives fork back\n", ((float) get_current_time(ph->data)/MS), ph->philo);
 	return (0);
 }
@@ -176,13 +176,11 @@ void	*do_stuff(void *arg)
 {
 	t_phil *ph = arg;
 
+	while (!ph->data->start)
+		continue;
 	ph->timer_die[ph->philo] = get_current_time(ph->data) + ph->data->ttd;
 	while (1)
 	{
-		ph->timer_sleep[ph->philo] = get_current_time(ph->data) + ph->data->tts;
-		printf ("%01.03f\t%u is sleeping\n", ((float) get_current_time(ph->data)/MS), ph->philo);
-		while (get_current_time(ph->data) < ph->timer_sleep[ph->philo])
-			continue ;
 
 		printf ("%01.03f\t%u is thiking\n", ((float) get_current_time(ph->data)/MS), ph->philo);
 		while (check_forks(ph))
@@ -196,8 +194,21 @@ void	*do_stuff(void *arg)
 		give_forks_back(ph);
 
 		ph->timer_die[ph->philo] = get_current_time(ph->data) + ph->data->ttd;
+
+		ph->timer_sleep[ph->philo] = get_current_time(ph->data) + ph->data->tts;
+		printf ("%01.03f\t%u is sleeping\n", ((float) get_current_time(ph->data)/MS), ph->philo);
+		while (get_current_time(ph->data) < ph->timer_sleep[ph->philo])
+			continue ;
 	}
 	return (0);
+}
+
+long long	get_start_time(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return (time.tv_usec / MS) + (time.tv_sec * MS);
 }
 
 int	philo_manager(t_phil *ph)
@@ -205,20 +216,24 @@ int	philo_manager(t_phil *ph)
 	unsigned int	i;
 
 	i = 0;
-	while (1)
+	ph->data->start = 1;
+	ph->data->start_time = get_start_time();
+	usleep (ph->data->ttd * MS);
+	while (!ph->data->stop)
 	{
 		if (ph->timer_die[i] < get_current_time(ph->data))
 		{
-			*ph->stop = 1;
+			ph->data->stop = 1;
+			printf("philo %u has died \n", i + 1);
 			break;
 		}
 		if (ph->data->should_end && ph->num_eat[i] < 1)
 		{
-			*ph->stop = 1;
+			ph->data->stop = 1;
 			break;
 		}
 		i++;
-		if (i > ph->data->nop)
+		if (i >= ph->data->nop)
 			i = 0;
 	}
 	return (0);
@@ -240,9 +255,7 @@ int ERR;
 			//dosomeerrorshit;
 		i++;
 	}
-	while (1)
-		;
-	// philo_manager(ph);
+	philo_manager(ph);
 	return (1);
 }
 

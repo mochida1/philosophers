@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 20:04:41 by hmochida          #+#    #+#             */
-/*   Updated: 2022/10/26 19:36:56 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/04 20:24:05 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	print_help(void)
 {
 	write (1, "\n\e[96m-------PHILOSOPHERS-------\n\e[92mUsage: ", 46);
 	write (1, "\e[0m./philo [number_of_philosophers] ", 38);
-	write (1, "[time_to_die time_to_eat] [time_to_sleep]", 42);
+	write (1, "[time_to_die] [time_to_eat] [time_to_sleep]", 42);
 	write (1, " \e[90m[number_of_times_each_philosopher_must_eat]\n\n", 52);
 	write (1, "\e[0mALL arguments take an \e[31m", 32);
 	write (1, "INTEGER as miliseconds. \e[0m", 29);
