@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:05:18 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 13:25:40 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 14:55:12 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,11 @@ void	*do_stuff(void *arg)
 	estad = 0;
 	wait_for_start(ph);
 	ph->timer_die[ph->philo] = get_current_time(ph->data) + ph->data->ttd;
+	if (ph->data->nop == 1)
+	{
+		just_die(ph);
+		return (NULL);
+	}
 	while (1)
 	{
 		if (estad == 0)

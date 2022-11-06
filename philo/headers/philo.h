@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:38 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 13:03:08 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 14:54:42 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void		wait_for_start(t_phil *ph);
 long long	get_current_time(t_init *data);
 void		*do_stuff(void *arg);
 int			check_forks(t_phil *ph);
+void		just_die(t_phil *ph);
 /* UTILS */
 void		*ft_calloc(size_t count, size_t size);
 int			ft_strcmp(char *str1, char *str2);

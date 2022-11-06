@@ -25,7 +25,7 @@ OBJS = $(addprefix $(BUILDDIR)/, $(SOURCES:%.c=%.o))
 
 # Compiler
 CC = clang
-CF = -Wall -Wextra -Werror
+CF = -Wall -Wextra -Werror -O3
 GDB = -ggdb
 VAL = valgrind --trace-children=no --leak-check=full --track-origins=yes \
 		./$(NAME) 4 410 200 200 10

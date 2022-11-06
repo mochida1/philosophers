@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:08:05 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 14:27:09 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 14:55:26 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,11 @@ int	check_forks(t_phil *ph)
 		print_fork(ph);
 	}
 	return (0);
+}
+
+void	just_die(t_phil *ph)
+{
+	printf("%lld\t%u is thiking;\n", get_current_time(ph->data), ph->philo + 1);
+	while (!ph->data->stop)
+		usleep(1 * MS);
 }

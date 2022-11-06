@@ -6,13 +6,13 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:33:23 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 12:08:30 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 14:48:24 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/philo.h"
 
-int	philosophers(t_phil *ph)
+static int	philosophers(t_phil *ph)
 {
 	unsigned int	i;
 	pthread_t		*tid;
