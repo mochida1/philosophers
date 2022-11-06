@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:05:18 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 17:09:47 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 17:29:17 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	do_eat(t_phil *ph, int *estad)
 	printf ("%lld\t%u is eating\n", get_current_time(ph->data), ph->philo + 1);
 	while (get_current_time(ph->data) < ph->timer_eat[ph->philo])
 	{
-		// usleep(0.05 * MS);
+		usleep(20);
 		continue ;
 	}
 	if (ph->data->stop)
@@ -75,7 +75,7 @@ static void	do_sleep(t_phil *ph, int *estad)
 			*estad = 3;
 			return ;
 		}
-		// usleep(0.05 * MS);
+		usleep(20);
 	}
 	*estad = 0;
 }
