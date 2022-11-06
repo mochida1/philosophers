@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:05:18 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 18:11:24 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 18:33:09 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ static void	do_think(t_phil *ph, int *estad)
 	}
 	printf("%lld\t%u is thiking\n", get_current_time(ph->data), ph->philo + 1);
 	check_forks(ph);
+	if (ph->data->stop)
+	{
+		*estad = STOP_ST;
+		return ;
+	}
 	*estad = EAT_ST;
 }
 
