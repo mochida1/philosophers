@@ -6,13 +6,17 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:00 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 16:41:49 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 18:10:39 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEFS_H
 # define DEFS_H
 # define MS 1000
+# define EAT_ST 0
+# define SLEEP_ST 1
+# define THINK_ST 2
+# define STOP_ST 3
 
 typedef struct s_init
 {

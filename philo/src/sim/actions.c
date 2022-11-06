@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:05:18 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 17:29:17 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 18:11:24 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ static void	do_think(t_phil *ph, int *estad)
 {
 	if (ph->data->stop)
 	{
-		*estad = 3;
+		*estad = STOP_ST;
 		return ;
 	}
 	printf("%lld\t%u is thiking\n", get_current_time(ph->data), ph->philo + 1);
 	check_forks(ph);
-	*estad = *estad + 1;
+	*estad = EAT_ST;
 }
 
 static void	do_eat(t_phil *ph, int *estad)
@@ -40,7 +40,7 @@ static void	do_eat(t_phil *ph, int *estad)
 	ph->timer_eat[ph->philo] = get_current_time(ph->data) + ph->data->tte;
 	if (ph->data->stop)
 	{
-		*estad = 3;
+		*estad = STOP_ST;
 		return ;
 	}
 	printf ("%lld\t%u is eating\n", get_current_time(ph->data), ph->philo + 1);
@@ -51,12 +51,12 @@ static void	do_eat(t_phil *ph, int *estad)
 	}
 	if (ph->data->stop)
 	{
-		*estad = 3;
+		*estad = STOP_ST;
 		return ;
 	}
 	give_forks_back(ph);
 	ph->timer_die[ph->philo] = get_current_time(ph->data) + ph->data->ttd;
-	*estad = 2;
+	*estad = SLEEP_ST;
 }
 
 static void	do_sleep(t_phil *ph, int *estad)
@@ -64,7 +64,7 @@ static void	do_sleep(t_phil *ph, int *estad)
 	ph->timer_sleep[ph->philo] = get_current_time(ph->data) + ph->data->tts;
 	if (ph->data->stop)
 	{
-		*estad = 3;
+		*estad = STOP_ST;
 		return ;
 	}
 	printf("%lld\t%u is sleeping\n", get_current_time(ph->data), ph->philo + 1);
@@ -72,12 +72,12 @@ static void	do_sleep(t_phil *ph, int *estad)
 	{
 		if (ph->data->stop)
 		{
-			*estad = 3;
+			*estad = STOP_ST;
 			return ;
 		}
 		usleep(20);
 	}
-	*estad = 0;
+	*estad = THINK_ST;
 }
 
 void	*do_stuff(void *arg)
@@ -86,7 +86,7 @@ void	*do_stuff(void *arg)
 	int		estad;
 
 	ph = arg;
-	estad = 0;
+	estad = THINK_ST;
 	wait_for_start(ph);
 	ph->timer_die[ph->philo] = get_current_time(ph->data) + ph->data->ttd;
 	if (ph->data->nop == 1)
@@ -96,13 +96,13 @@ void	*do_stuff(void *arg)
 	}
 	while (1)
 	{
-		if (estad == 0)
-			do_think(ph, &estad);
-		if (estad == 1)
+		if (estad == EAT_ST)
 			do_eat(ph, &estad);
-		if (estad == 2)
+		if (estad == SLEEP_ST)
 			do_sleep(ph, &estad);
-		if (estad == 3)
+		if (estad == THINK_ST)
+			do_think(ph, &estad);
+		if (estad == STOP_ST)
 			return (NULL);
 	}
 	return (NULL);
