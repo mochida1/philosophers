@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:08:05 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 14:55:26 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 16:13:07 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	check_forks(t_phil *ph)
 
 	if (!ph->philo % 2 && start < ph->data->nop / 2)
 	{
-		usleep(0.5 * MS);
+		usleep(5 * MS);
 		start++;
 	}
 	if (!ph->forks[ph->own_fork] && !ph->forks[ph->other_fork])
