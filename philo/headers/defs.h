@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:00 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/05 21:24:27 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 16:41:49 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_init
 	long long		start_time;
 	volatile int	start;
 	int				stop;
+	unsigned char	*is_delay;
 	pthread_t		*threads;
 }	t_init;
 

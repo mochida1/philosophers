@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:05:18 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 16:13:39 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 17:09:47 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static int	give_forks_back(t_phil *ph)
 	if (ph->data->should_end)
 		ph->num_eat[ph->philo]--;
 	pthread_mutex_unlock(&ph->mutex[ph->own_fork]);
-	ph->forks[ph->own_fork] = 0;
 	pthread_mutex_unlock(&ph->mutex[ph->other_fork]);
+	ph->forks[ph->own_fork] = 0;
 	ph->forks[ph->other_fork] = 0;
 	return (0);
 }
@@ -46,7 +46,7 @@ static void	do_eat(t_phil *ph, int *estad)
 	printf ("%lld\t%u is eating\n", get_current_time(ph->data), ph->philo + 1);
 	while (get_current_time(ph->data) < ph->timer_eat[ph->philo])
 	{
-		usleep(0.5 * MS);
+		// usleep(0.05 * MS);
 		continue ;
 	}
 	if (ph->data->stop)
@@ -75,7 +75,7 @@ static void	do_sleep(t_phil *ph, int *estad)
 			*estad = 3;
 			return ;
 		}
-		usleep(0.5 * MS);
+		// usleep(0.05 * MS);
 	}
 	*estad = 0;
 }

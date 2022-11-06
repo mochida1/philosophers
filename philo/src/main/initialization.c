@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 20:45:37 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/05 21:27:48 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 16:44:08 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,6 @@ t_init	*init_data(char *argv[])
 	convert_args(this, argv);
 	if (check_this_for_zeros(this, argv))
 		this = safe_free(this);
+	this->is_delay = ft_calloc (this->nop, sizeof(char));
 	return (this);
 }

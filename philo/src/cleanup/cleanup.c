@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 11:57:35 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 11:59:52 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 16:44:48 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	free_all_things(t_phil *ph)
 	ph->timer_sleep = safe_free (ph->timer_sleep);
 	ph->timer_die = safe_free (ph->timer_die);
 	ph->num_eat = safe_free (ph->num_eat);
+	ph->data->is_delay = safe_free(ph->data->is_delay);
 	ph->data = safe_free(ph->data);
 	ph = safe_free(ph);
 }

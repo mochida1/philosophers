@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:08:05 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 16:16:36 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 17:10:53 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,18 @@ static void	print_fork(t_phil *ph)
 
 int	check_forks(t_phil *ph)
 {
-	static unsigned int	start;
-
-	if (!ph->philo % 2 && start < ph->data->nop / 2)
+	if ((ph->philo % 2) && (!ph->data->is_delay[ph->philo]))
 	{
-		usleep(2 * MS);
-		start++;
+		usleep(1 * MS);
+		ph->data->is_delay[ph->philo]++;
 	}
 	if (!ph->forks[ph->own_fork] && !ph->forks[ph->other_fork])
 	{
+		pthread_mutex_lock(&ph->mutex[ph->own_fork]);
+		pthread_mutex_lock(&ph->mutex[ph->other_fork]);
 		ph->forks[ph->own_fork] = 1;
 		ph->forks[ph->other_fork] = 1;
-		pthread_mutex_lock(&ph->mutex[ph->own_fork]);
 		print_fork(ph);
-		pthread_mutex_lock(&ph->mutex[ph->other_fork]);
 		print_fork(ph);
 	}
 	return (0);

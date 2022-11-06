@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 11:59:34 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 16:22:36 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 17:13:41 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	philo_manager(t_phil *ph)
 			break ;
 		if (eat_checker(ph))
 			break ;
-		usleep(1 * MS);
+		usleep(0.1 * MS);
 	}
 	return (0);
 }
