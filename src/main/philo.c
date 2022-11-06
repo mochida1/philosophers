@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:33:23 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/05 18:37:44 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/05 21:12:36 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int destroy_all_mutexes(pthread_mutex_t *mut, int tot_to_destroy)
 {
-	while (tot_to_destroy < 0)
+	while (tot_to_destroy > 0)
 	{
 		pthread_mutex_destroy(&mut[tot_to_destroy]);
 		tot_to_destroy--;
@@ -162,6 +162,8 @@ int	check_forks(t_phil *ph)
 
 int	give_forks_back(t_phil *ph)
 {
+	if (ph->data->should_end)
+		ph->num_eat[ph->philo]--;
 	pthread_mutex_unlock(&ph->mutex[ph->own_fork]);
 	ph->forks[ph->own_fork] = 0;
 	pthread_mutex_unlock(&ph->mutex[ph->other_fork]);
@@ -185,11 +187,14 @@ void	*do_stuff(void *arg)
 	{
 		if (estad == 0)
 		{
+			if (ph->data->stop)
+				return (NULL);
 			printf("%lld\t%u is thiking;\n", get_current_time(ph->data), ph->philo);
 			check_forks(ph);
 			estad++;
 		}
-
+		if (ph->data->stop)
+			return (NULL);
 		if (estad == 1)
 		{
 			ph->timer_eat[ph->philo] = get_current_time(ph->data) + ph->data->tte;
@@ -199,14 +204,17 @@ void	*do_stuff(void *arg)
 				usleep(MS);
 				continue ;
 			}
+			if (ph->data->stop)
+			return (NULL);
 			give_forks_back(ph);
 			ph->timer_die[ph->philo] = get_current_time(ph->data) + ph->data->ttd;
 			estad = 2;
 		}
-
 		if (estad == 2)
 		{
 			ph->timer_sleep[ph->philo] = get_current_time(ph->data) + ph->data->tts;
+			if (ph->data->stop)
+				return (NULL);
 			printf ("%lld\t%u is sleeping;\n", get_current_time(ph->data), ph->philo);
 			while (get_current_time(ph->data) < ph->timer_sleep[ph->philo])
 			{
@@ -227,6 +235,20 @@ long long	get_start_time(void)
 	return (time.tv_usec / MS) + (time.tv_sec * MS);
 }
 
+int	check_eats(t_phil *ph)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < ph->data->nop)
+	{
+		if (ph->num_eat[i] > 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	philo_manager(t_phil *ph)
 {
 	unsigned int	i;
@@ -243,9 +265,10 @@ int	philo_manager(t_phil *ph)
 			printf("%lld\tphilo %u has died \n", get_current_time(ph->data), i);
 			break;
 		}
-		if (ph->data->should_end && ph->num_eat[i] < 1)
+		if (ph->data->should_end && check_eats(ph))
 		{
 			ph->data->stop = 1;
+			printf("All philosophers have eaten at least %d times!\n", ph->data->endwhen);
 			break;
 		}
 		i++;
@@ -273,6 +296,10 @@ int ERR;
 		i++;
 	}
 	philo_manager(ph);
+	i = 0;
+	while (i < ph->data->nop)
+		pthread_join(tid[i++], NULL);
+	tid = safe_free(tid);
 	return (1);
 }
 
@@ -302,6 +329,20 @@ void PRINT_PHILOS(t_phil *ph)
 	}
 	exit (0);
 }
+
+void	free_all_things(t_phil *ph)
+{
+	destroy_all_mutexes(ph->mutex, ph->data->nop - 1);
+	ph->mutex = safe_free(ph->mutex);
+	ph->forks = safe_free(ph->forks);
+	ph->timer_eat = safe_free (ph->timer_eat);
+	ph->timer_sleep = safe_free (ph->timer_sleep);
+	ph->timer_die = safe_free (ph->timer_die);
+	ph->num_eat = safe_free (ph->num_eat);
+	ph->data = safe_free(ph->data);
+	ph = safe_free(ph);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_init	*data;
@@ -318,5 +359,9 @@ int	main(int argc, char *argv[])
 // PRINT_DATA(data);
 // PRINT_PHILOS(ph);
 	if (philosophers(ph))
-		return (1);
+		{
+			free_all_things(ph);
+			return (0);
+		}
+
 }

@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:00 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/05 18:02:52 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/05 21:02:42 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_init
 	long long start_time;
 	volatile int start;
 	int stop;
+	pthread_t *threads;
 } t_init;
 
 typedef struct s_phil
@@ -56,10 +57,10 @@ typedef struct s_phil
 	char *forks;
 	unsigned int own_fork;
 	unsigned int other_fork;
-	volatile long long *timer_eat;
-	volatile long long *timer_sleep;
-	volatile long long *timer_die;
-	volatile int *num_eat;
+	long long *timer_eat;
+	long long *timer_sleep;
+	long long *timer_die;
+	int *num_eat;
 } t_phil;
 
 #endif // DEFS_H
