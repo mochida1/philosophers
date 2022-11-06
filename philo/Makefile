@@ -28,7 +28,7 @@ CC = clang
 CF = -Wall -Wextra -Werror
 GDB = -ggdb
 VAL = valgrind --trace-children=no --leak-check=full --track-origins=yes \
-		./$(NAME) 410 200 200
+		./$(NAME) 4 410 200 200
 FSF = -fsanitize=address
 
 # Turn on when using libft ***************************************************
