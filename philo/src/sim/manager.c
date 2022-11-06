@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 11:59:34 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 16:11:21 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 16:22:36 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,21 @@ static int	check_eats(t_phil *ph)
 	return (1);
 }
 
-static int	dead_checker(t_phil *ph, unsigned int i)
+static int	dead_checker(t_phil *ph)
 {
-	if (ph->timer_die[i] < get_current_time(ph->data))
+	unsigned int	i;
+
+	i = 0;
+	while (i < ph->data->nop)
 	{
-		ph->data->stop = 1;
-		printf("%lld\tphilo %u has died \n",
-			get_current_time(ph->data), i + 1);
-		return (1);
+		if (ph->timer_die[i] < get_current_time(ph->data))
+		{
+			ph->data->stop = 1;
+			printf("%lld\tphilo %u has died \n",
+				get_current_time(ph->data), i + 1);
+			return (1);
+		}
+		i++;
 	}
 	return (0);
 }
@@ -52,22 +59,16 @@ static int	eat_checker(t_phil *ph)
 
 int	philo_manager(t_phil *ph)
 {
-	unsigned int	i;
-
-	i = 0;
 	ph->data->start = 1;
 	ph->data->start_time = get_start_time();
 	usleep (ph->data->ttd * MS);
 	while (!ph->data->stop)
 	{
-		if (dead_checker(ph, i))
+		if (dead_checker(ph))
 			break ;
 		if (eat_checker(ph))
 			break ;
-		i++;
-		if (i == ph->data->nop)
-			i = 0;
-		usleep(3 * MS);
+		usleep(1 * MS);
 	}
 	return (0);
 }
