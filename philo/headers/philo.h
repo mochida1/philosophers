@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:38 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 12:10:27 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/06 13:03:08 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ pthread_mutex_unlock
 # include <pthread.h> //pthread_*
 # include <sys/time.h> // gettimeofday
 # include "defs.h"
-# include "../libft/libft.h"
 
 t_init		*init_data(char *argv[]);
 
@@ -52,5 +51,12 @@ void		wait_for_start(t_phil *ph);
 long long	get_current_time(t_init *data);
 void		*do_stuff(void *arg);
 int			check_forks(t_phil *ph);
+/* UTILS */
+void		*ft_calloc(size_t count, size_t size);
+int			ft_strcmp(char *str1, char *str2);
+void		*safe_free(void *this);
+void		*ft_memset(void *b, int c, size_t len);
+int			ft_isdigit(int c);
+int			ft_atoi(const char *str);
 
 #endif // PHILO_H
