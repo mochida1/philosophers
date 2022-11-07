@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defs.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmochida <hmochida@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:00 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 18:10:39 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/07 20:05:12 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_init
 typedef struct s_phil
 {
 	unsigned int	philo;
+	int				fasted;
 	t_init			*data;
 	pthread_mutex_t	*mutex;
 	char			*forks;

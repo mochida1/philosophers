@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:05:18 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/07 18:05:36 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/07 20:57:22 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,21 @@ static int	give_forks_back(t_phil *ph)
 	return (0);
 }
 
+void get_hungry(t_phil *ph)
+{
+	if (ph->data->nop % 2 && ph->fasted % ph->data->nop == 0)
+	{
+		while ((ph->timer_die[ph->philo] - get_current_time(ph->data) > ph->data->ttd * 0.6) && !ph->data->stop)
+			usleep(10);
+		ph->fasted++;
+	}
+	else
+		ph->fasted++;
+}
+
 static void	do_think(t_phil *ph, int *estad)
 {
+	get_hungry(ph);
 	if (ph->data->stop)
 	{
 		*estad = STOP_ST;
@@ -51,7 +64,7 @@ static void	do_eat(t_phil *ph, int *estad)
 	printf ("%lld\t%u is eating\n", get_current_time(ph->data), ph->philo + 1);
 	while (get_current_time(ph->data) < ph->timer_eat[ph->philo])
 	{
-		usleep(100);
+		usleep(10);
 		continue ;
 	}
 	if (ph->data->stop)
@@ -80,7 +93,7 @@ static void	do_sleep(t_phil *ph, int *estad)
 			*estad = STOP_ST;
 			return ;
 		}
-		usleep(100);
+		usleep(10);
 	}
 	*estad = THINK_ST;
 }

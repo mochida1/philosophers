@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:08:05 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/07 18:15:01 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/07 20:36:56 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ int	check_forks(t_phil *ph)
 {
 	if ((ph->philo % 2) && (!ph->data->is_delay[ph->philo]))
 	{
-		usleep(0.5 * MS);
+		usleep(1 * MS);
 		ph->data->is_delay[ph->philo]++;
 	}
 	while ((ph->forks[ph->own_fork] || ph->forks[ph->other_fork]))
 	{
 		if (ph->data->stop)
 			return (0);
-		usleep(100);
+		usleep(10);
 	}
 	if (!ph->forks[ph->own_fork] && !ph->forks[ph->other_fork])
 	{

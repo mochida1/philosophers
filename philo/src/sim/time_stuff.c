@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:02:55 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/07 18:05:42 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/07 20:16:21 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ long long	get_current_time(t_init *data)
 
 void	wait_for_start(t_phil *ph)
 {
+	if (ph->data->nop % 2)
+		return ;
 	while (!ph->data->start)
-		usleep(100);
+		usleep(10);
 }

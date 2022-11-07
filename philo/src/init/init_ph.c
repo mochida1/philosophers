@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_ph.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmochida <hmochida@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 11:50:51 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 11:53:46 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/07 20:39:39 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ static int	sub_init_ph1(t_phil *ph, t_init *data)
 	while (i < data->nop)
 	{
 		ph[i].philo = i;
+		ph[i].fasted = i;
 		ph[i].data = data;
 		ph[i].mutex = mut;
 		ph[i].timer_eat = to_eat;
