@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmochida <hmochida@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:08:05 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/06 18:42:49 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/07 18:15:01 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	check_forks(t_phil *ph)
 {
 	if ((ph->philo % 2) && (!ph->data->is_delay[ph->philo]))
 	{
-		usleep(2 * MS);
+		usleep(0.5 * MS);
 		ph->data->is_delay[ph->philo]++;
 	}
 	while ((ph->forks[ph->own_fork] || ph->forks[ph->other_fork]))

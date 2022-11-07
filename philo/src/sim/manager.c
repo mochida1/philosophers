@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 11:59:34 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/07 18:05:33 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/07 18:11:46 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static int	eat_checker(t_phil *ph)
 	if (ph->data->should_end && check_eats(ph))
 	{
 		ph->data->stop = 1;
+		usleep(MS);
 		printf("All philosophers have eaten at least %d times!\n",
 			ph->data->endwhen);
 		return (1);
