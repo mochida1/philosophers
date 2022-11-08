@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   actions_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmochida <hmochida@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:08:05 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/07 20:36:56 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/08 03:11:06 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/philo.h"
+
+void	get_hungry(t_phil *ph)
+{
+	if (ph->data->nop % 2 && ph->fasted % ph->data->nop == 0)
+	{
+		while ((ph->timer_die[ph->philo] - get_current_time(ph->data)
+				> ph->data->ttd * 0.6) && !ph->data->stop)
+			usleep(10);
+		ph->fasted++;
+	}
+	else
+		ph->fasted++;
+}
 
 static void	print_fork(t_phil *ph)
 {

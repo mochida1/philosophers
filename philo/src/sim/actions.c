@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmochida <hmochida@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:05:18 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/07 20:57:22 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/08 03:11:15 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,6 @@ static int	give_forks_back(t_phil *ph)
 	ph->forks[ph->own_fork] = 0;
 	ph->forks[ph->other_fork] = 0;
 	return (0);
-}
-
-void get_hungry(t_phil *ph)
-{
-	if (ph->data->nop % 2 && ph->fasted % ph->data->nop == 0)
-	{
-		while ((ph->timer_die[ph->philo] - get_current_time(ph->data) > ph->data->ttd * 0.6) && !ph->data->stop)
-			usleep(10);
-		ph->fasted++;
-	}
-	else
-		ph->fasted++;
 }
 
 static void	do_think(t_phil *ph, int *estad)
