@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmochida <hmochida@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:33:23 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/07 18:05:30 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/16 20:28:41 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	philosophers(t_phil *ph)
 	tid = malloc (sizeof(pthread_t) * ph->data->nop);
 	i = 0;
 	rc = 0;
-	ph->data->start_time = get_start_time();
+	lock_all_ctrl(ph);
 	while (i < ph->data->nop)
 	{
 		rc = pthread_create(&tid[i], NULL, do_stuff, &ph[i]);

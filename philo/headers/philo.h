@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:38 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/08 03:12:00 by coder            ###   ########.fr       */
+/*   Updated: 2022/11/16 20:33:11 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void		*do_stuff(void *arg);
 int			check_forks(t_phil *ph);
 void		just_die(t_phil *ph);
 void		get_hungry(t_phil *ph);
+void		lock_all_ctrl(t_phil *ph);
+void		unlock_all_ctrl(t_phil *ph);
 /* UTILS */
 void		*ft_calloc(size_t count, size_t size);
 int			ft_strcmp(char *str1, char *str2);

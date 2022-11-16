@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_ph.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmochida <hmochida@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 11:50:51 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/07 20:39:39 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/16 20:35:47 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,25 @@ static int	sub_init_ph2(t_phil *ph, t_init *data)
 	return (0);
 }
 
-static int	init_mutex(pthread_mutex_t *mut, t_init *data)
+static int	init_mutex(pthread_mutex_t *mut, pthread_mutex_t *ct, t_init *data)
 {
 	unsigned int	i;
+	unsigned int	rv;
 
 	i = 0;
+	rv = 0;
 	while (i < data->nop)
 	{
 		if (pthread_mutex_init(&mut[i], NULL))
-			return (destroy_all_mutexes(mut, i));
+			rv = 1;
+		if (pthread_mutex_init(&mut[i], NULL) && rv)
+			rv += 2;
+		if (rv)
+			destroy_all_mutexes(mut, i);
+		if (rv == 3)
+			destroy_all_mutexes(ct, i);
+		if (rv == 2 && i)
+			destroy_all_mutexes(ct, i - 1);
 		i++;
 	}
 	return (i);
@@ -77,12 +87,14 @@ static int	sub_init_ph1(t_phil *ph, t_init *data)
 {
 	unsigned int	i;
 	pthread_mutex_t	*mut;
+	pthread_mutex_t	*ct;
 	long long		*to_eat;
 	long long		*to_sleep;
 
 	i = 0;
 	mut = ft_calloc(data->nop, sizeof(*mut));
-	init_mutex(mut, data);
+	ct = ft_calloc(data->nop, sizeof(*ct));
+	init_mutex(mut, ct, data);
 	to_eat = ft_calloc(data->nop, sizeof(long long int));
 	to_sleep = ft_calloc(data->nop, sizeof(long long int));
 	while (i < data->nop)
@@ -91,6 +103,7 @@ static int	sub_init_ph1(t_phil *ph, t_init *data)
 		ph[i].fasted = i;
 		ph[i].data = data;
 		ph[i].mutex = mut;
+		ph[i].ctrl = ct;
 		ph[i].timer_eat = to_eat;
 		ph[i].timer_sleep = to_sleep;
 		i++;

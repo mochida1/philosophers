@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defs.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmochida <hmochida@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:00 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/07 20:05:12 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/16 20:19:27 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_phil
 	int				fasted;
 	t_init			*data;
 	pthread_mutex_t	*mutex;
+	pthread_mutex_t	*ctrl;
 	char			*forks;
 	unsigned int	own_fork;
 	unsigned int	other_fork;

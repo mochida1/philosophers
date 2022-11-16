@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manager.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmochida <hmochida@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 11:59:34 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/07 18:11:46 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/16 20:37:14 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ static int	eat_checker(t_phil *ph)
 
 int	philo_manager(t_phil *ph)
 {
-	ph->data->start = 1;
+	ph->data->start_time = get_start_time();
+	unlock_all_ctrl(ph);
 	usleep (ph->data->ttd * MS);
 	while (!ph->data->stop)
 	{
