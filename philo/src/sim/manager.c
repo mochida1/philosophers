@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 11:59:34 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/16 20:37:14 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/16 21:33:05 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,13 @@ static int	check_eats(t_phil *ph)
 	i = 0;
 	while (i < ph->data->nop)
 	{
+		pthread_mutex_lock(&ph->ctrl[i]);
 		if (ph->num_eat[i] > 0)
-			return (0);
+			{
+				pthread_mutex_unlock(&ph->ctrl[i]);
+				return (0);
+			}
+		pthread_mutex_unlock(&ph->ctrl[i]);
 		i++;
 	}
 	return (1);
@@ -33,13 +38,16 @@ static int	dead_checker(t_phil *ph)
 	i = 0;
 	while (i < ph->data->nop)
 	{
-		if (ph->timer_die[i] < get_current_time(ph->data))
+		pthread_mutex_lock(&ph->ctrl[i]);
+		if (ph->timer_die[i] < get_current_time())
 		{
 			ph->data->stop = 1;
 			printf("%lld\tphilo %u has died \n",
-				get_current_time(ph->data), i + 1);
+				get_current_time(), i + 1);
+			pthread_mutex_unlock(&ph->ctrl[i]);
 			return (1);
 		}
+		pthread_mutex_unlock(&ph->ctrl[i]);
 		i++;
 	}
 	return (0);
@@ -60,7 +68,6 @@ static int	eat_checker(t_phil *ph)
 
 int	philo_manager(t_phil *ph)
 {
-	ph->data->start_time = get_start_time();
 	unlock_all_ctrl(ph);
 	usleep (ph->data->ttd * MS);
 	while (!ph->data->stop)

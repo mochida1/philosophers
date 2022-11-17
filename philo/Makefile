@@ -14,7 +14,8 @@ MAIN = philo.c initialization.c
 ARGS = check_args.c print_help_arg.c print_help_utils.c
 INIT = init_ph.c init_ph2.c
 CLEANUP = cleanup.c
-SIM = actions_utils.c actions.c manager.c time_stuff.c lock_all_ctrl.c
+SIM = actions_utils.c actions.c manager.c time_stuff.c lock_all_ctrl.c \
+check_stops.c
 UTILS = safe_free.c ft_strcmp.c ft_calloc.c ft_memset.c ft_atoi.c ft_isdigit.c
 
 # Names sources

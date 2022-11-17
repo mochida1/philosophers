@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:00 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/16 20:19:27 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/16 21:17:39 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ typedef struct s_init
 	int				tts;
 	volatile int	should_end;
 	int				endwhen;
-	long long		start_time;
-	volatile int	start;
 	int				stop;
 	unsigned char	*is_delay;
 	pthread_t		*threads;
@@ -40,7 +38,6 @@ typedef struct s_phil
 	t_init			*data;
 	pthread_mutex_t	*mutex;
 	pthread_mutex_t	*ctrl;
-	char			*forks;
 	unsigned int	own_fork;
 	unsigned int	other_fork;
 	long long		*timer_eat;

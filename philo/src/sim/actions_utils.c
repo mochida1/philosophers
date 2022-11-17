@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:08:05 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/08 03:11:06 by coder            ###   ########.fr       */
+/*   Updated: 2022/11/16 21:42:22 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	get_hungry(t_phil *ph)
 {
 	if (ph->data->nop % 2 && ph->fasted % ph->data->nop == 0)
 	{
-		while ((ph->timer_die[ph->philo] - get_current_time(ph->data)
+		while ((ph->timer_die[ph->philo] - get_current_time()
 				> ph->data->ttd * 0.6) && !ph->data->stop)
 			usleep(10);
 		ph->fasted++;
@@ -27,10 +27,12 @@ void	get_hungry(t_phil *ph)
 
 static void	print_fork(t_phil *ph)
 {
+	if(check_stops(ph))
+		return ;
 	printf ("%lld\t%u has taken a fork\n",
-		get_current_time(ph->data), ph->philo + 1);
+		get_current_time(), ph->philo + 1);
 	printf ("%lld\t%u has taken a fork\n",
-		get_current_time(ph->data), ph->philo + 1);
+		get_current_time(), ph->philo + 1);
 }
 
 int	check_forks(t_phil *ph)
@@ -40,26 +42,18 @@ int	check_forks(t_phil *ph)
 		usleep(1 * MS);
 		ph->data->is_delay[ph->philo]++;
 	}
-	while ((ph->forks[ph->own_fork] || ph->forks[ph->other_fork]))
-	{
-		if (ph->data->stop)
-			return (0);
-		usleep(10);
-	}
-	if (!ph->forks[ph->own_fork] && !ph->forks[ph->other_fork])
-	{
-		pthread_mutex_lock(&ph->mutex[ph->own_fork]);
-		pthread_mutex_lock(&ph->mutex[ph->other_fork]);
-		ph->forks[ph->own_fork] = 1;
-		ph->forks[ph->other_fork] = 1;
-		print_fork(ph);
-	}
+	if(check_stops(ph))
+		return (0);
+	pthread_mutex_lock(&ph->mutex[ph->own_fork]);
+	pthread_mutex_lock(&ph->mutex[ph->other_fork]);
+	print_fork(ph);
 	return (0);
 }
 
-void	just_die(t_phil *ph)
+int	just_die(t_phil *ph)
 {
-	printf("%lld\t%u is thiking;\n", get_current_time(ph->data), ph->philo + 1);
+	printf("%lld\t%u is thiking;\n", get_current_time(), ph->philo + 1);
 	while (!ph->data->stop)
 		usleep(100);
+	return (1);
 }

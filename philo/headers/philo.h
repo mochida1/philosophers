@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:38 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/16 20:33:11 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/16 21:41:24 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,14 @@ int			destroy_all_mutexes(pthread_mutex_t *mut, int tot_to_destroy);
 int			philo_manager(t_phil *ph);
 long long	get_start_time(void);
 void		wait_for_start(t_phil *ph);
-long long	get_current_time(t_init *data);
+long long	get_current_time(void);
 void		*do_stuff(void *arg);
 int			check_forks(t_phil *ph);
-void		just_die(t_phil *ph);
+int			just_die(t_phil *ph);
 void		get_hungry(t_phil *ph);
 void		lock_all_ctrl(t_phil *ph);
 void		unlock_all_ctrl(t_phil *ph);
+int			check_stops(t_phil *ph);
 /* UTILS */
 void		*ft_calloc(size_t count, size_t size);
 int			ft_strcmp(char *str1, char *str2);
