@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 11:50:51 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/16 22:00:15 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/17 21:37:00 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,13 @@
 static int	sub_init_ph3(t_phil *ph, t_init *data)
 {
 	unsigned int	i;
-	pthread_mutex_t	*geral_tmp;
+	char			*tmp_forks;
 
 	i = 0;
-	geral_tmp = ft_calloc(sizeof (*geral_tmp), 1);
-	pthread_mutex_init(geral_tmp, NULL);
+	tmp_forks = ft_calloc(ph->data->nop, sizeof(char));
 	while (i < data->nop)
 	{
-		ph->geral = geral_tmp;
+		ph[i].forks = tmp_forks;
 		ph[i].own_fork = ph[i].philo;
 		if (ph[i].philo == ph[i].data->nop - 1)
 			ph[i].other_fork = 0;

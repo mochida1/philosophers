@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 11:59:34 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/16 21:54:32 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/17 20:47:45 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,21 @@ static int	dead_checker(t_phil *ph)
 	i = 0;
 	while (i < ph->data->nop)
 	{
-		pthread_mutex_lock(&ph->ctrl[i]);
+		// pthread_mutex_lock(&ph->ctrl[i]);
+pthread_mutex_lock(&ph->data->geral);
 		if (ph->timer_die[i] < get_current_time())
 		{
-			pthread_mutex_lock(ph->geral);
+pthread_mutex_unlock(&ph->data->geral);
+pthread_mutex_lock(&ph->data->geral);
 			ph->data->stop = 1;
-			pthread_mutex_unlock(ph->geral);
+pthread_mutex_unlock(&ph->data->geral);
 			printf("%lld\tphilo %u has died \n",
 				get_current_time(), i + 1);
-			pthread_mutex_unlock(&ph->ctrl[i]);
+			// pthread_mutex_unlock(&ph->ctrl[i]);
 			return (1);
 		}
-		pthread_mutex_unlock(&ph->ctrl[i]);
+pthread_mutex_unlock(&ph->data->geral);
+		// pthread_mutex_unlock(&ph->ctrl[i]);
 		i++;
 	}
 	return (0);
