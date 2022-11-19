@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:05:18 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/19 18:08:58 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/19 18:17:12 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,15 @@ static void	do_eat(t_phil *ph, int *estad)
 	pthread_mutex_unlock(&ph->data->geral);
 	while (get_current_time() < ph->timer_eat[ph->philo])
 	{
+		pthread_mutex_lock(&ph->data->geral);
+		if (ph->data->stop)
+		{
+			pthread_mutex_unlock(&ph->data->geral);
+			give_forks_back(ph);
+			*estad = STOP_ST;
+			return ;
+		}
+		pthread_mutex_unlock(&ph->data->geral);
 		usleep(10);
 		continue ;
 	}
