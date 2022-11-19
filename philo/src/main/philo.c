@@ -6,11 +6,39 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:33:23 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/16 20:28:41 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/19 16:37:42 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/philo.h"
+
+void	unlock_all(t_phil *ph)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < ph->data->nop)
+	{
+		pthread_mutex_unlock(&ph->mutex[i]);
+		pthread_mutex_unlock(&ph->ctrl[i]);
+		i++;
+	}
+	pthread_mutex_unlock(&ph->data->geral);
+}
+
+void	lock_all(t_phil *ph)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < ph->data->nop)
+	{
+		pthread_mutex_lock(&ph->mutex[i]);
+		pthread_mutex_lock(&ph->ctrl[i]);
+		i++;
+	}
+	pthread_mutex_lock(&ph->data->geral);
+}
 
 static int	philosophers(t_phil *ph)
 {
@@ -21,7 +49,6 @@ static int	philosophers(t_phil *ph)
 	tid = malloc (sizeof(pthread_t) * ph->data->nop);
 	i = 0;
 	rc = 0;
-	lock_all_ctrl(ph);
 	while (i < ph->data->nop)
 	{
 		rc = pthread_create(&tid[i], NULL, do_stuff, &ph[i]);
@@ -34,6 +61,9 @@ static int	philosophers(t_phil *ph)
 	}
 	philo_manager(ph);
 	i = 0;
+	lock_all(ph);
+	usleep (10 * MS);
+	unlock_all(ph);
 	while (i < ph->data->nop)
 		pthread_join(tid[i++], NULL);
 	tid = safe_free(tid);

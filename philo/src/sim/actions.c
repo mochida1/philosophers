@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:05:18 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/17 21:55:33 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/19 16:38:58 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ pthread_mutex_lock(&ph->data->geral);
 		ph->num_eat[ph->philo]--;
 pthread_mutex_unlock(&ph->data->geral);
 	}
-	ph->forks[ph->own_fork] = 0;
+	// ph->forks[ph->own_fork] = 0;
 	pthread_mutex_unlock(&ph->mutex[ph->own_fork]);
-	ph->forks[ph->other_fork] = 0;
+	// ph->forks[ph->other_fork] = 0;
 	pthread_mutex_unlock(&ph->mutex[ph->other_fork]);
 	return (0);
 }
@@ -48,6 +48,7 @@ pthread_mutex_lock(&ph->data->geral);
 	{
 pthread_mutex_unlock(&ph->data->geral);
 		*estad = STOP_ST;
+		give_forks_back(ph);
 		return ;
 	}
 pthread_mutex_unlock(&ph->data->geral);
@@ -61,6 +62,7 @@ pthread_mutex_lock(&ph->data->geral);
 	if (ph->data->stop)
 	{
 pthread_mutex_unlock(&ph->data->geral);
+		give_forks_back(ph);
 		*estad = STOP_ST;
 		return ;
 	}
