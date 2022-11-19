@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:31:38 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/16 21:41:24 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/19 18:59:57 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,10 @@ void		get_hungry(t_phil *ph);
 void		lock_all_ctrl(t_phil *ph);
 void		unlock_all_ctrl(t_phil *ph);
 int			check_stops(t_phil *ph);
+int			check_if_dead(t_phil *ph, int *estad);
+int			atomic_eat(t_phil *ph, int *estad);
+int			give_forks_back(t_phil *ph);
+int			eat_check_stop(t_phil *ph, int *estad);
 /* UTILS */
 void		*ft_calloc(size_t count, size_t size);
 int			ft_strcmp(char *str1, char *str2);

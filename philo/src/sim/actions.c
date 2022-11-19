@@ -6,13 +6,13 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:05:18 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/19 18:17:12 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/19 19:00:05 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/philo.h"
 
-static int	give_forks_back(t_phil *ph)
+int	give_forks_back(t_phil *ph)
 {
 	if (ph->data->should_end)
 	{
@@ -28,14 +28,8 @@ static int	give_forks_back(t_phil *ph)
 static void	do_think(t_phil *ph, int *estad)
 {
 	get_hungry(ph);
-	pthread_mutex_lock(&ph->data->geral);
-	if (ph->data->stop)
-	{
-		pthread_mutex_unlock(&ph->data->geral);
-		*estad = STOP_ST;
+	if (check_if_dead(ph, estad))
 		return ;
-	}
-	pthread_mutex_unlock(&ph->data->geral);
 	pthread_mutex_lock(&ph->data->geral);
 	printf("%lld\t%u is thiking\n", get_current_time(), ph->philo + 1);
 	pthread_mutex_unlock(&ph->data->geral);
@@ -66,29 +60,10 @@ static void	do_eat(t_phil *ph, int *estad)
 	}
 	printf ("%lld\t%u is eating\n", get_current_time(), ph->philo + 1);
 	pthread_mutex_unlock(&ph->data->geral);
-	while (get_current_time() < ph->timer_eat[ph->philo])
-	{
-		pthread_mutex_lock(&ph->data->geral);
-		if (ph->data->stop)
-		{
-			pthread_mutex_unlock(&ph->data->geral);
-			give_forks_back(ph);
-			*estad = STOP_ST;
-			return ;
-		}
-		pthread_mutex_unlock(&ph->data->geral);
-		usleep(10);
-		continue ;
-	}
-	pthread_mutex_lock(&ph->data->geral);
-	if (ph->data->stop)
-	{
-		pthread_mutex_unlock(&ph->data->geral);
-		give_forks_back(ph);
-		*estad = STOP_ST;
+	if (atomic_eat(ph, estad))
 		return ;
-	}
-	pthread_mutex_unlock(&ph->data->geral);
+	if (eat_check_stop(ph, estad))
+		return ;
 	give_forks_back(ph);
 	pthread_mutex_lock(&ph->data->geral);
 	ph->timer_die[ph->philo] = get_current_time() + ph->data->ttd;
@@ -99,14 +74,8 @@ static void	do_eat(t_phil *ph, int *estad)
 static void	do_sleep(t_phil *ph, int *estad)
 {
 	ph->timer_sleep[ph->philo] = get_current_time() + ph->data->tts;
-	pthread_mutex_lock(&ph->data->geral);
-	if (ph->data->stop)
-	{
-		pthread_mutex_unlock(&ph->data->geral);
-		*estad = STOP_ST;
+	if (check_if_dead(ph, estad))
 		return ;
-	}
-	pthread_mutex_unlock(&ph->data->geral);
 	pthread_mutex_lock(&ph->data->geral);
 	printf("%lld\t%u is sleeping\n", get_current_time(), ph->philo + 1);
 	pthread_mutex_unlock(&ph->data->geral);

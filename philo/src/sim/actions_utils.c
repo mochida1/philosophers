@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 12:08:05 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/19 18:09:34 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/19 19:10:12 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,24 @@
 
 void	get_hungry(t_phil *ph)
 {
+	int	ctrl;
+
+	ctrl = 1;
 	if (ph->data->nop % 2 && ph->fasted % ph->data->nop == 0)
 	{
-		while ((ph->timer_die[ph->philo] - get_current_time()
-				> ph->data->ttd * 0.6) && !ph->data->stop)
-			usleep(10);
-		ph->fasted++;
+		while (ctrl)
+		{
+			pthread_mutex_lock(&ph->data->geral);
+			if ((ph->timer_die[ph->philo] - get_current_time()
+					> ph->data->ttd * 0.6) && !ph->data->stop)
+			{
+				ctrl = 0;
+				pthread_mutex_unlock(&ph->data->geral);
+				usleep(10);
+				ph->fasted++;
+			}
+			pthread_mutex_unlock(&ph->data->geral);
+		}
 	}
 	else
 		ph->fasted++;

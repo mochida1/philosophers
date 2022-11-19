@@ -6,7 +6,7 @@
 /*   By: hmochida <hmochida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 14:33:23 by hmochida          #+#    #+#             */
-/*   Updated: 2022/11/19 16:37:42 by hmochida         ###   ########.fr       */
+/*   Updated: 2022/11/19 18:23:58 by hmochida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ void	lock_all(t_phil *ph)
 	pthread_mutex_lock(&ph->data->geral);
 }
 
+static void	wait_for_end(t_phil *ph)
+{
+	lock_all(ph);
+	usleep (10 * MS);
+	unlock_all(ph);
+}
+
 static int	philosophers(t_phil *ph)
 {
 	unsigned int	i;
@@ -60,10 +67,8 @@ static int	philosophers(t_phil *ph)
 		i++;
 	}
 	philo_manager(ph);
+	wait_for_end(ph);
 	i = 0;
-	lock_all(ph);
-	usleep (10 * MS);
-	unlock_all(ph);
 	while (i < ph->data->nop)
 		pthread_join(tid[i++], NULL);
 	tid = safe_free(tid);
